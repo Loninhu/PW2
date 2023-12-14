@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title>Lista de Consultas</title>
+</head>
+<main class="container form-control">
+
+<body >
+
+<h2 class="b15">Listagem de Consultas</h2>
+
+<form th:action="@{/consultas/buscar}" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">🔎</button>
+        </div>
+        <input class="form-control" type="date" name="data">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">↩️</button>
+        </div>
+    </div>
+</form>
+
+<p class="alert alert-info" th:if="${consultas.size()==0}" >Nenhuma Consulta Encontrada</p>
+<div th:if="${consultas.size()!=0}">
+<table class="table" border="1">
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Visualizar</th>
+        <th sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">Editar</th>
+        <th sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">Excluir</th>
+    </tr>
+    </thead>
+    <tr th:each="c : ${consultas}">
+        <p class="alert alert-danger" th:if="${c.paciente.getNome()==null}" th:field="Nenhuma Consulta Encontrada"></p>
+        <td th:text="${#temporals.format(c.data,'dd/MM/yyyy')}"> </td>
+        <td th:text="${c.paciente.getNome()}"></td>
+        <td th:text="${c.medico.getNome()}"></td>
+        <td> <a  class="bt b20" th:href="@{/consultas/mostrar/{id}(id=${c.id})}">👁️</a> </td>
+        <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')"> <a  class="bt b15" th:href="@{/consultas/edit/{id}(id=${c.id})}">✏️</a> </td>
+        <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')"> <a  class="bt b15" onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"  th:href="@{/consultas/remove/{id}(id=${c.id})}">❌</a> </td>
+    </tr>
+
+</table>
+</div>
+</body>
+</main>
+</html>

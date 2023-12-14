@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title>Registro de Médico</title>
+</head>
+<main class="container">
+<body>
+<h1>Registro de Médico</h1>
+<form th:action="${medico.id == null ? '/medicos/save' : '/medicos/update'}" th:object="${medico}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <input class="form-control" type="text" th:field="*{nome}"  placeholder="Nome"><p class="alert alert-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+    <input class="form-control" type="text" th:field="*{crm}"  placeholder="CRM"><p class="alert alert-danger" th:if="${#fields.hasErrors('crm')}" th:errors="*{crm}"></p>
+    <input class="btn btn-outline-success" type="submit" value="Enviar">
+</form>
+</body>
+</main>
+</html>

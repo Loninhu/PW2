@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title>Lista de Paciente</title>
+</head>
+<main class="container form-control">
+<body>
+
+<h2 class="b15">Listagem de Pacientes</h2>
+
+<form th:action="@{/pacientes/buscar}" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">🔎</button>
+        </div>
+        <input class="form-control" type="text" placeholder="Pesquisar Paciente" name="nome">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">↩️</button>
+        </div>
+    </div>
+</form>
+
+<p class="alert alert-info" th:if="${pacientes.size()==0}" >Nenhum Paciente Encontrado</p>
+
+<div th:if="${pacientes.size()!=0}">
+<table class="table" border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Consultas</th>
+        <th sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">Editar</th>
+        <th sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">Excluir</th>
+    </tr>
+    </thead>
+    <tr th:each="p : ${pacientes}">
+        <td th:text="${p.id}"> </td>
+        <td th:text="${p.nome}"> </td>
+        <td th:text="${p.telefone}"> </td>
+        <td> <a class="bt b20" th:href="@{/consultas/listarpaciente/{id}(id=${p.id})}">📋</a> </td>
+        <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')"> <a class="bt b15" th:href="@{/pacientes/edit/{id}(id=${p.id})}">✏️</a> </td>
+        <td sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')"> <a class="bt b15" onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"  th:href="@{/pacientes/remove/{id}(id=${p.id})}">❌</a> </td>
+    </tr>
+
+</table>
+</div>
+</body>
+</main>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title>Lista de Médicos</title>
+</head>
+<main class="container form-control">
+<body>
+<h2 class="b15">Listagem de Médicos</h2>
+
+<form th:action="@{/medicos/buscar}" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">🔎</button>
+        </div>
+        <input class="form-control" type="text" placeholder="Pesquisar Médico" name="nome">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">↩️</button>
+        </div>
+    </div>
+</form>
+
+<p class="alert alert-info" th:if="${medicos.size()==0}" >Nenhum Médico Encontrado</p>
+
+<div th:if="${medicos.size()!=0}">
+
+<table class="table" border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>CRM</th>
+        <th>Consultas</th>
+        <th>Editar</th>
+        <th>Excluir</th>
+    </tr>
+    </thead>
+    <tr th:each="m : ${medicos}">
+        <td th:text="${m.id}"> </td>
+        <td th:text="${m.nome}"> </td>
+        <td th:text="${m.crm}"> </td>
+        <td> <a class="bt b20" th:href="@{/consultas/listarmedico/{id}(id=${m.id})}">📋</a> </td>
+        <td> <a class="bt b15" th:href="@{/medicos/edit/{id}(id=${m.id})}">✏️</a> </td>
+        <td> <a class="bt b15" onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"  th:href="@{/medicos/remove/{id}(id=${m.id})}">❌</a> </td>
+    </tr>
+
+
+</table>
+</div>
+</body>
+</main>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title>Registro de Consulta</title>
+</head>
+<main class="container">
+<body>
+<h1>Registro de Consulta</h1>
+<form  th:action="${consulta.id == 0 ? '/consultas/save' : '/consultas/update'}" th:object="${consulta}" method="post">
+<!--style="display: flex;"-->
+    <input type="hidden" th:field="*{id}">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Data</span>
+        </div>
+    <input class="form-control" type="datetime-local" th:field="*{data}">
+        </div>
+    <p class="alert alert-danger" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></p>
+    <br>
+
+
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Preço R$</span>
+        </div>
+            <input class="form-control" type="number" th:field="*{valor}">
+    </div>
+    <p class="alert alert-danger" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></p>
+    <br>
+
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Observação</span>
+        </div>
+            <textarea  aria-describedby="inputGroup-sizing-sm" aria-label="Observação" class="form-control" type="text" th:field="*{observacao}" placeholder="..."></textarea>
+    </div>
+        <br>
+    <p class="alert alert-danger" th:if="${#fields.hasErrors('observacao')}" th:errors="*{observacao}"></p>
+        <br>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="paciente">Pacientes</label>
+        </div>
+    <select id="paciente" name="paciente" th:field="*{paciente.id}" class="form-select">
+
+        <option value="">Selecione...</option>
+
+        <option th:each="p : ${pacientes}"
+
+                th:value="${p.id}"
+
+                th:text="${p.nome}">
+
+        </option>
+
+    </select>
+    </div>
+    <p class="alert alert-danger" th:if="${#fields.hasErrors('paciente.id')}" th:errors="*{paciente.id}"></p>
+        <br>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="medico">Pacientes</label>
+        </div>
+    <select id="medico" name="medico" th:field="*{medico.id}" class="form-select">
+
+        <option value="">Selecione...</option>
+
+        <option th:each="m : ${medicos}"
+
+                th:value="${m.id}"
+
+                th:text="${m.nome}">
+
+        </option>
+
+    </select>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('medico.id')}" th:errors="*{medico.id}"></p>
+        </div>
+    <br>
+
+
+    <input class="btn btn-outline-success" type="submit" value="Enviar">
+</form>
+</body>
+</main>
+</html>

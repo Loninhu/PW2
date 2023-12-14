@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::head},~{::main})}">
+<head th:replace="~{/fragments/head :: head(~{::title},~{})}">
+    <title th:text="'Consulta de '+${consulta.paciente.getNome()}"></title>
+</head>
+<main class="container">
+    <body>
+    <div class="card">
+        <div class="card-header">
+    <h2 th:text="'Consulta de '+${consulta.paciente.getNome()}"></h2>
+        </div>
+        <br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Médico Reponsável</span>
+            </div>
+            <span class="form-control" th:text="${consulta.medico.getNome()}"></span>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Preço</span>
+            </div>
+            <span class="form-control" th:text="'R$'+${consulta.valor}"></span>
+
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Data</span>
+            </div>
+            <span class="form-control" th:text="${#temporals.format(consulta.data,'dd/MM/yyyy')}"></span>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Hora</span>
+            </div>
+            <span class="form-control" th:text="${#temporals.format(consulta.data,'HH:mm')}"></span>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Observação</span>
+            </div>
+            <span class="form-control" th:text="${consulta.observacao}"></span>
+        </div>
+    </div>
+
+    </body>
+</main>
+</html>
